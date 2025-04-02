@@ -247,3 +247,4 @@ int Board::getAliveBugCount() const {
     return count_if(bugs.begin(), bugs.end(),
         [](const unique_ptr<Bug>& bug) { return bug->isAlive(); });
 }
+//
