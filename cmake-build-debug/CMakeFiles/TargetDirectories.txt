@@ -1,0 +1,3 @@
+C:/Users/AGBro/OneDrive/Documents/BugBattle/cmake-build-debug/CMakeFiles/BugBattle.dir
+C:/Users/AGBro/OneDrive/Documents/BugBattle/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/AGBro/OneDrive/Documents/BugBattle/cmake-build-debug/CMakeFiles/rebuild_cache.dir
