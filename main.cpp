@@ -24,8 +24,10 @@ int main () {
         case 1:
              board.initializeBoard("crawler-bugs.txt");  // Call initializeBoard with a filename
         //move bug txt file to cmake
-        break;
-        case 2:;
+        break; //change to go back to menu
+
+        case 2:
+            board.displayAllBugs();
     }
 
 

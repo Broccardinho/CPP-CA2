@@ -78,3 +78,13 @@ void Board::initializeBoard(const string& filename) {
         cout << "Successfully loaded " << bugs.size() << " bugs." << endl;
     }
 }
+
+void Board::displayAllBugs() const {
+    for (const Crawler* bug : bugs) {
+        cout << bug->getId() << " "
+             << "(" << bug->getPosition().x << "," << bug->getPosition().y << ") "
+             << bug->getSize() << " "
+             << bug->directionToString() << " "
+             << (bug->isAlive() ? "Alive" : "Dead") << endl;
+    }
+}

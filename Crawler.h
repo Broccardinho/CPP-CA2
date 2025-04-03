@@ -45,6 +45,7 @@ public:
     // Utility functions
     string directionToString() const;
     string getType() const { return "Crawler"; }  // Specific to Crawler
+    string typeToString() const { return "Crawler"; }
 };
 
 #endif // CRAWLER_H
