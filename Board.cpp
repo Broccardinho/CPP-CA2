@@ -82,6 +82,7 @@ void Board::initializeBoard(const string& filename) {
 void Board::displayAllBugs() const {
     for (const Crawler* bug : bugs) {
         cout << bug->getId() << " "
+             << "Crawler "  // Directly output the type since we only have Crawlers
              << "(" << bug->getPosition().x << "," << bug->getPosition().y << ") "
              << bug->getSize() << " "
              << bug->directionToString() << " "
