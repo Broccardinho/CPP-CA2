@@ -28,9 +28,13 @@ int main() {
             case 2:
                 board.displayAllBugs();
             break;
-            case 3:
-                // Implement find bug functionality
-                    break;
+            case 3: {
+                int searchId;
+                cout << "Enter Bug ID to find: ";
+                cin >> searchId;
+                board.findBugById(searchId);
+                break;
+            }
             case 4:
                 // Implement tap functionality
                     break;

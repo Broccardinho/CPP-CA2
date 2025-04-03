@@ -18,6 +18,7 @@ public:
     void clearBugs();
      void initializeBoard(const string& filename);//Q1
     void displayAllBugs() const;//Q2
+    void findBugById(int id) const;//Q3
 };
 
 #endif // BOARD_H

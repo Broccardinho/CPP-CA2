@@ -89,3 +89,19 @@ void Board::displayAllBugs() const {
              << (bug->isAlive() ? "Alive" : "Dead") << endl;
     }
 }
+
+void Board::findBugById(int id) const {
+    for (const Crawler* bug : bugs) {
+        if (bug->getId() == id) {
+            cout << "Bug Found:\n"
+                 << "ID: " << bug->getId() << " | "
+                 << "Type: Crawler | "
+                 << "Position: (" << bug->getPosition().x << "," << bug->getPosition().y << ") | "
+                 << "Size: " << bug->getSize() << " | "
+                 << "Direction: " << bug->directionToString() << " | "
+                 << "Status: " << (bug->isAlive() ? "Alive" : "Dead") << endl;
+            return;
+        }
+    }
+    cout << "Bug with ID " << id << " not found.\n";
+}
