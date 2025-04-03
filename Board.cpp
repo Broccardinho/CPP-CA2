@@ -44,7 +44,7 @@ void Board::initializeBoard(const string& filename) {
         Direction dir = static_cast<Direction>(direction);
 
         if (type == 'C') {
-            bugs.push_back(make_unique<Crawler>(id, pos, dir, size));
+            crawlers_.push_back(make_unique<Crawler>(Crawler{id, pos, dir, size}));
         }
         // Add other bug types here when implemented
     }
@@ -53,29 +53,29 @@ void Board::initializeBoard(const string& filename) {
     updateCellOccupancy();
 }
 
-void Board::displayAllBugs() const {
-    for (const auto& bug : bugs) {
-        cout << bug->getId() << " "
-             << bug->typeToString() << " "
-             << "(" << bug->getPosition().x << "," << bug->getPosition().y << ") "
-             << bug->getSize() << " "
-             << bug->directionToString() << " "
-             << (bug->isAlive() ? "Alive" : "Dead") << endl;
+void Board::displayAllCrawlers() const {
+    for (const auto& crawler : crawlers_) {
+        cout << crawler->getId() << " "
+             << crawler->typeToString() << " "
+             << "(" << crawler->getPosition().x << "," << crawler->getPosition().y << ") "
+             << crawler->getSize() << " "
+             << crawler->directionToString() << " "
+             << (crawler->isAlive() ? "Alive" : "Dead") << endl;
     }
 }
 
-Bug* Board::findBug(int id) const {
-    auto it = find_if(bugs.begin(), bugs.end(),
-        [id](const unique_ptr<Bug>& bug) { return bug->getId() == id; });
+Crawler* Board::findBug(int id) const {
+    auto it = find_if(crawlers_.begin(), crawlers_.end(),
+        [id](const unique_ptr<Crawler>& crawler) { return crawler->getId() == id; });
 
-    return (it != bugs.end()) ? it->get() : nullptr;
+    return (it != crawlers_.end()) ? it->get() : nullptr;
 }
 
 void Board::tapBoard() {
     // Move all alive bugs
-    for (auto& bug : bugs) {
-        if (bug->isAlive()) {
-            bug->move();
+    for (auto& crawler : crawlers_) {
+        if (crawler->isAlive()) {
+            crawler->move();
         }
     }
 
@@ -90,20 +90,20 @@ void Board::tapBoard() {
 }
 
 void Board::displayLifeHistory() const {
-    for (const auto& bug : bugs) {
-        cout << bug->getId() << " " << bug->typeToString() << " Path: ";
-        for (const auto& pos : bug->getPositions()) {
+    for (const auto& crawler : crawlers_) {
+        cout << crawler->getId() << " " << crawler->typeToString() << " Path: ";
+        for (const auto& pos : crawler->getPositions()) {
             cout << "(" << pos.x << "," << pos.y << ")";
-            if (&pos != &bug->getPositions().back()) {
+            if (&pos != &crawler->getPositions().back()) {
                 cout << ",";
             }
         }
 
-        if (!bug->isAlive()) {
+        if (!crawler->isAlive()) {
             // Find who ate this bug (if any)
-            for (const auto& potentialEater : bugs) {
+            for (const auto& potentialEater : crawlers_) {
                 if (potentialEater->isAlive() &&
-                    potentialEater->getPosition() == bug->getPositions().back()) {
+                    potentialEater->getPosition() == crawler->getPositions().back()) {
                     cout << " Eaten by " << potentialEater->getId();
                     break;
                 }
@@ -138,15 +138,15 @@ void Board::displayAllCells() const {
 void Board::runSimulation() {
     while (!isGameOver()) {
         tapBoard();
-        displayAllBugs();  // Show current state
+        displayAllCrawlers();  // Show current state
         this_thread::sleep_for(chrono::milliseconds(100));  // 0.1 second delay
     }
 
     // Find the last bug standing
-    auto lastBug = find_if(bugs.begin(), bugs.end(),
-        [](const unique_ptr<Bug>& bug) { return bug->isAlive(); });
+    auto lastBug = find_if(crawlers_.begin(), crawlers_.end(),
+        [](const unique_ptr<Crawler>& bug) { return bug->isAlive(); });
 
-    if (lastBug != bugs.end()) {
+    if (lastBug != crawlers_.end()) {
         cout << "Game Over! Last bug standing: "
              << (*lastBug)->typeToString() << " "
              << (*lastBug)->getId() << endl;
@@ -159,7 +159,7 @@ void Board::runSimulation() {
 void Board::updateCellOccupancy() {
     cellOccupancy.clear();
 
-    for (auto& bug : bugs) {
+    for (auto& bug : crawlers_) {
         if (bug->isAlive()) {
             cellOccupancy[bug->getPosition()].push_back(bug.get());
         }
@@ -171,7 +171,7 @@ void Board::fightInCell(Position pos) {
 
     // Find the biggest bug(s)
     int maxSize = 0;
-    vector<Bug*> biggestBugs;
+    vector<Crawler*> biggestBugs;
 
     for (auto bug : bugsInCell) {
         if (bug->getSize() > maxSize) {
@@ -184,7 +184,7 @@ void Board::fightInCell(Position pos) {
     }
 
     // In te situation of multiple large bugs, one is randomly chosen to be eaten
-    Bug* winner = biggestBugs[rand() % biggestBugs.size()];
+    Crawler* winner = biggestBugs[rand() % biggestBugs.size()];
     int totalSizeEaten = 0;
 
     // Mark all other bugs as dead and calculate total size
@@ -213,7 +213,7 @@ void Board::writeLifeHistoryToFile() const {
         return;
     }
 
-    for (const auto& bug : bugs) {
+    for (const auto& bug : crawlers_) {
         outFile << bug->getId() << " " << bug->typeToString() << " Path: ";
         for (const auto& pos : bug->getPositions()) {
             outFile << "(" << pos.x << "," << pos.y << ")";
@@ -224,7 +224,7 @@ void Board::writeLifeHistoryToFile() const {
 
         if (!bug->isAlive()) {
             // Find who ate this bug if there was a bug who ate the bug
-            for (const auto& potentialEater : bugs) {
+            for (const auto& potentialEater : crawlers_) {
                 if (potentialEater->isAlive() &&
                     potentialEater->getPosition() == bug->getPositions().back()) {
                     outFile << " Eaten by " << potentialEater->getId();
@@ -244,7 +244,7 @@ bool Board::isGameOver() const {
 }
 
 int Board::getAliveBugCount() const {
-    return count_if(bugs.begin(), bugs.end(),
-        [](const unique_ptr<Bug>& bug) { return bug->isAlive(); });
+    return count_if(crawlers_.begin(), crawlers_.end(),
+        [](const unique_ptr<Crawler>& bug) { return bug->isAlive(); });
 }
 //

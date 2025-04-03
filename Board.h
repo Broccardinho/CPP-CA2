@@ -5,7 +5,7 @@
 #ifndef BOARD_H
 #define BOARD_H
 
-#include "Bug.h"
+// #include "Bug.h"
 #include "Crawler.h"
 #include <vector>
 #include <map>
@@ -15,9 +15,9 @@ using namespace std;
 
 class Board {
 private:
-    vector<unique_ptr<Bug>> bugs;  //Memory managements
+    vector<unique_ptr<Crawler>> crawlers_;  //Memory managements
 
-    map<Position, vector<Bug*>> cellOccupancy;  //Bug tracker
+    map<Position, vector<Crawler*>> cellOccupancy;  //Bug tracker
 
 
     void updateCellOccupancy();
@@ -30,8 +30,8 @@ public:
 
 
     void initializeBoard(const string& filename);
-    void displayAllBugs() const;
-    Bug* findBug(int id) const;
+    void displayAllCrawlers() const;
+    Crawler* findBug(int id) const;
     void tapBoard();
     void displayLifeHistory() const;
     void displayAllCells() const;
