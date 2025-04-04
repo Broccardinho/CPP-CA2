@@ -292,3 +292,41 @@ void Board::runSimulation() {
         }
     }
 }
+
+void Board::saveLifeHistoryToFile() const {
+    const string filename = "crawlers-result.txt";
+    ofstream outFile(filename);
+    if (!outFile.is_open()) {
+        cerr << "Error: Could not open file " << filename << " for writing." << endl;
+        return;
+    }
+
+    time_t now = time(nullptr);//gets time
+
+    ifstream file(filename);
+    if (!file.is_open()) {
+        cerr << "Error opening file: " << filename << endl;
+        return;
+    }
+
+    outFile << "Bug Life History - " << ctime(&now) << "\n";
+
+    for (const Crawler* bug : bugs) {
+        outFile << "Bug " << bug->getId() << ":\n";
+        outFile << "  Type: Crawler\n";
+        outFile << "  Size: " << bug->getSize() << "\n";
+        outFile << "  Status: " << (bug->isAlive() ? "Alive" : "Dead") << "\n";
+        outFile << "  Path: ";
+
+        const auto& path = bug->getPath();
+        for (auto it = path.begin(); it != path.end(); ++it) {
+            outFile << "(" << it->x << "," << it->y << ")";
+            if (next(it) != path.end()) outFile << " -> ";
+        }
+
+        outFile << "\n\n";
+    }
+
+    outFile.close();
+    cout << "Bug life history automatically saved to " << filename << endl;
+}

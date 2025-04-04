@@ -26,7 +26,7 @@ public:
     void displayAllCells() const;//Q6
     void runSimulation();//Q7
     bool isGameOver() const;//Q7
-    void saveLifeHistoryToFile();//Q8
+    void saveLifeHistoryToFile() const;//Q8
 
     private:
     void moveAllLivingBugs();
