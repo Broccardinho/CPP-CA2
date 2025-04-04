@@ -219,3 +219,33 @@ void Board::displayLifeHistory() const {
         cout << "\nStatus: " << (bug->isAlive() ? "Alive" : "Dead") << endl;
     }
 }
+
+void Board::displayAllCells() const {
+    map<Position, vector<const Crawler* >> cellMap;
+    for (const Crawler* bug: bugs) {
+        if (bug->isAlive()) {
+            cellMap[bug->getPosition()].push_back(bug);
+        }
+    }
+
+    cout << "\n=== ALL CELLS ===\n";
+    for (int y = 0; y < 10; y++) {
+        for (int x = 0; x < 10; x++) {
+            Position pos{x,y};
+            cout << "(" << x << "," << y << ")";
+
+            auto it = cellMap.find(pos);
+            if (it == cellMap.end()) {
+                cout << "empty";
+            }else {
+                bool first = true;
+                for (const Crawler* bug: it->second) {
+                    if (!first) cout << ", ";
+                    cout << bug->getId();
+                    first = false;
+                }
+            }
+            cout << endl;
+        }
+    }
+}

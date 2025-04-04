@@ -42,8 +42,8 @@ int main() {
                 board.displayLifeHistory();
                 break;
             case 6:
-                // Implement cell display
-                    break;
+                board.displayAllCells();
+                break;
             case 7:
                 // Implement simulation
                     break;
