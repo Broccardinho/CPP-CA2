@@ -36,20 +36,21 @@ int main() {
                 break;
             }
             case 4:
-                // Implement tap functionality
+                board.tapBoard();
                     break;
             case 5:
-                // Implement life history display
-                    break;
+                board.displayLifeHistory();
+                break;
             case 6:
-                // Implement cell display
-                    break;
+                board.displayAllCells();
+                break;
             case 7:
-                // Implement simulation
+                board.runSimulation();
                     break;
             case 8:
+                board.saveLifeHistoryToFile();
                 cout << "Exiting program..." << endl;
-            break;
+            return 0;
             default:
                 cout << "Invalid choice. Please try again." << endl;
         }
@@ -58,4 +59,3 @@ int main() {
 
     return 0;
 }
-//
