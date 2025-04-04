@@ -17,18 +17,20 @@ Board::Board() {
 }
 
 Board::~Board() {
-    clearBugs();  // Cleans up all allocated Bug objects
+    clearBugs(); // Cleans up all allocated Bug objects
 }
 
-void Board::clearBugs() { //ensures that each time this is ran, the bugs are reset
-    for (Crawler* bug : bugs) {
+void Board::clearBugs() {
+    //ensures that each time this is ran, the bugs are reset
+    for (Crawler *bug: bugs) {
         delete bug;
     }
     bugs.clear();
 }
 
-void Board::initializeBoard(const string& filename) {
-    clearBugs();  // Clear any existing bugs
+
+void Board::initializeBoard(const string &filename) {
+    clearBugs(); // Clear any existing bugs
 
     ifstream file(filename);
     if (!file.is_open()) {
@@ -68,7 +70,7 @@ void Board::initializeBoard(const string& filename) {
         if (type == 'C') {
             bugs.push_back(new Crawler(id, pos, dir, size));
             cout << "Created Crawler: ID=" << id << ", Position=(" << x << "," << y
-                 << "), Direction=" << direction << ", Size=" << size << endl;
+                    << "), Direction=" << direction << ", Size=" << size << endl;
         } else {
             cerr << "Unknown bug type: " << type << endl;
         }
@@ -81,28 +83,119 @@ void Board::initializeBoard(const string& filename) {
 }
 
 void Board::displayAllBugs() const {
-    for (const Crawler* bug : bugs) {
+    for (const Crawler *bug: bugs) {
         cout << bug->getId() << " "
-             << "Crawler "  // Directly output the type since we only have Crawlers
-             << "(" << bug->getPosition().x << "," << bug->getPosition().y << ") "
-             << bug->getSize() << " "
-             << bug->directionToString() << " "
-             << (bug->isAlive() ? "Alive" : "Dead") << endl;
+                << "Crawler " // Directly output the type since we only have Crawlers
+                << "(" << bug->getPosition().x << "," << bug->getPosition().y << ") "
+                << bug->getSize() << " "
+                << bug->directionToString() << " "
+                << (bug->isAlive() ? "Alive" : "Dead") << endl;
     }
 }
 
 void Board::findBugById(int id) const {
-    for (const Crawler* bug : bugs) {
+    for (const Crawler *bug: bugs) {
         if (bug->getId() == id) {
             cout << "Bug Found:\n"
-                 << "ID: " << bug->getId() << " | "
-                 << "Type: Crawler | "
-                 << "Position: (" << bug->getPosition().x << "," << bug->getPosition().y << ") | "
-                 << "Size: " << bug->getSize() << " | "
-                 << "Direction: " << bug->directionToString() << " | "
-                 << "Status: " << (bug->isAlive() ? "Alive" : "Dead") << endl;
+                    << "ID: " << bug->getId() << " | "
+                    << "Type: Crawler | "
+                    << "Position: (" << bug->getPosition().x << "," << bug->getPosition().y << ") | "
+                    << "Size: " << bug->getSize() << " | "
+                    << "Direction: " << bug->directionToString() << " | "
+                    << "Status: " << (bug->isAlive() ? "Alive" : "Dead") << endl;
             return;
         }
     }
     cout << "Bug with ID " << id << " not found.\n";
+}
+
+void Board::tapBoard() {
+    cout << "\n=== TAPPING THE BOARD ===" << endl;
+    moveAllLivingBugs();
+    //
+    // cout << "\nPositions before battles:" << endl;
+    // updateBugPositions();
+    // for (auto &[pos, bugs]: bugsByPosition) {
+    //     if (bugs.size() > 1) {
+    //         cout << "Multiple bugs at (" << pos.x << "," << pos.y << "): ";
+    //         for (auto bug: bugs) cout << bug->getId() << " ";
+    //         cout << endl;
+    //     }
+    // }
+
+    resolveBattles();
+    //
+    // cout << "\nBattle results:" << endl;
+    // updateBugPositions();
+    // for (auto &[pos, bugs]: bugsByPosition) {
+    //     if (!bugs.empty()) {
+    //         cout << "(" << pos.x << "," << pos.y << "): ";
+    //         for (auto bug: bugs) {
+    //             cout << bug->getId() << "(" << (bug->isAlive() ? "Alive" : "Dead") << ") ";
+    //         }
+    //         cout << endl;
+    //     }
+    // }
+    cout << "Board Tapped!!! Bugs have moved and battles over!!!" << endl;
+}
+
+void Board::moveAllLivingBugs() {
+    for (Crawler *bug: bugs) {
+        if (bug->isAlive()) {
+            bug->move();
+        }
+    }
+    updateBugPositions();
+}
+
+void Board::updateBugPositions() {
+    bugsByPosition.clear();
+    for (Crawler *bug: bugs) {
+        if (bug->isAlive()) {
+            bugsByPosition[bug->getPosition()].push_back(bug);
+        }
+    }
+}
+
+void Board::resolveBattles() {
+    updateBugPositions();
+
+    for (auto &[position, bugsInCell]: bugsByPosition) {
+        vector<Crawler *> livingBugs;
+        copy_if(bugsInCell.begin(), bugsInCell.end(), back_inserter(livingBugs),
+                [](Crawler *bug) { return bug->isAlive(); });
+
+        if (livingBugs.size() > 1) {
+            cout << "Battle at (" << position.x << "," << position.y << ") between: ";
+            for (auto bug: livingBugs) cout << bug->getId() << " ";
+            cout << endl;
+
+            auto maxIt = max_element(livingBugs.begin(), livingBugs.end(),
+                                     [](Crawler *a, Crawler *b) { return a->getSize() < b->getSize(); });
+            int maxSize = (*maxIt)->getSize();
+
+            vector<Crawler *> strongestBugs;
+            copy_if(livingBugs.begin(), livingBugs.end(), back_inserter(strongestBugs),
+                    [maxSize](Crawler *bug) { return bug->getSize() == maxSize; });
+
+            if (!strongestBugs.empty()) {
+                Crawler *winner = strongestBugs[rand() % strongestBugs.size()];
+                int totalSizeEaten = 0;
+
+                for (Crawler *bug: livingBugs) {
+                    if (bug != winner) {
+                        totalSizeEaten += bug->getSize();
+                        bug->setAlive(false);
+                        cout << "  Bug " << winner->getId() << " ate " << bug->getId() << endl;
+                    }
+                }
+
+                if (totalSizeEaten > 0) {
+                    winner->grow(totalSizeEaten);
+                    cout << "  Bug " << winner->getId() << " grew to size "
+                            << winner->getSize() << endl;
+                }
+            }
+        }
+    }
 }

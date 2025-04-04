@@ -36,7 +36,7 @@ int main() {
                 break;
             }
             case 4:
-                // Implement tap functionality
+                board.tapBoard();
                     break;
             case 5:
                 // Implement life history display
