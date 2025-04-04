@@ -9,6 +9,7 @@
 #include <ctime>
 #include <iomanip>
 using namespace std;
+//
 
 Board::Board() {
     // bug direction changer
