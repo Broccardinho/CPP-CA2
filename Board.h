@@ -22,6 +22,7 @@ public:
     void displayAllBugs() const;//Q2
     void findBugById(int id) const;//Q3
     void tapBoard();//Q4
+    void displayLifeHistory() const;//Q5
 
     private:
     void moveAllLivingBugs();

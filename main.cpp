@@ -39,8 +39,8 @@ int main() {
                 board.tapBoard();
                     break;
             case 5:
-                // Implement life history display
-                    break;
+                board.displayLifeHistory();
+                break;
             case 6:
                 // Implement cell display
                     break;

@@ -199,3 +199,23 @@ void Board::resolveBattles() {
         }
     }
 }
+
+void Board::displayLifeHistory() const {
+    if (bugs.empty()) {
+        cout << "No bugs found!" << endl;
+        return;
+    }
+
+    cout << "\n=== LIFE HISTORY OF ALL BUGS ===\n";
+    for (const Crawler* bug: bugs) {
+        cout << "\nBug " << bug->getId();
+        cout << " Path: ";
+
+        const auto& path = bug->getPath();
+        for (auto it = path.begin(); it != path.end(); ++it) {
+            cout << "(" << it->x << "," << it->y << ")";
+            if ( next(it) != path.end() ) cout << " -> ";
+        }
+        cout << "\nStatus: " << (bug->isAlive() ? "Alive" : "Dead") << endl;
+    }
+}
