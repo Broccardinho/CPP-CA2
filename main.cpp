@@ -49,7 +49,7 @@ int main() {
                     break;
             case 8:
                 board.saveLifeHistoryToFile();
-                cout << "Exiting program..." << endl;
+            cout << "Exiting program..." << endl;
             return 0;
             default:
                 cout << "Invalid choice. Please try again." << endl;
