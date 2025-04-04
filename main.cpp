@@ -45,11 +45,12 @@ int main() {
                 board.displayAllCells();
                 break;
             case 7:
-                // Implement simulation
+                board.runSimulation();
                     break;
             case 8:
+                board.saveLifeHistoryToFile();
                 cout << "Exiting program..." << endl;
-            break;
+            return 0;
             default:
                 cout << "Invalid choice. Please try again." << endl;
         }

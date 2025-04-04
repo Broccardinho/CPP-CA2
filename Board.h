@@ -23,7 +23,11 @@ public:
     void findBugById(int id) const;//Q3
     void tapBoard();//Q4
     void displayLifeHistory() const;//Q5
-    void displayAllCells() const;
+    void displayAllCells() const;//Q6
+    void runSimulation();//Q7
+    bool isGameOver() const;//Q7
+    void saveLifeHistoryToFile();//Q8
+
     private:
     void moveAllLivingBugs();
     void resolveBattles();

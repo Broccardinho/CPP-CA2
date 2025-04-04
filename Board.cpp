@@ -249,3 +249,46 @@ void Board::displayAllCells() const {
         }
     }
 }
+
+bool Board::isGameOver() const {
+    int aliveCount = 0;
+    for (const Crawler* bug: bugs) {
+        if (bug->isAlive()) aliveCount++;
+        if (aliveCount > 1) return false;
+    }
+    return true;
+}
+
+void Board::runSimulation() {
+    if (bugs.empty()) {
+        cout << "No bugs found!" << endl;
+        return;
+    }
+
+    cout << "\n=== STARTING SIMULATION ===" << endl;
+
+    int tapCount = 0;
+    while (!isGameOver()) {
+        tapBoard();
+        tapCount++;
+
+        if (tapCount % 10 == 0) {
+            int aliveCount = 0;
+            for (const Crawler* bug: bugs) {
+                if (bug->isAlive()) aliveCount++;
+            }
+            cout << "\nAfter " << tapCount << " taps: " << aliveCount << " bugs remaining\n";
+        }
+
+        this_thread::sleep_for(chrono::milliseconds(100));
+    }
+
+    for (const Crawler* bug: bugs) {
+        if (bug->isAlive()) {
+            cout << "\n=== SIMULATION COMPLETE ===" << endl;
+            cout << "Winner after " << tapCount << " taps: "
+            << "Bug " << bug->getId() << " Size: " << bug->getSize() << endl;
+            break;
+        }
+    }
+}
