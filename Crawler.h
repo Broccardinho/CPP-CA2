@@ -27,6 +27,9 @@ public:
     Crawler(int id, Position pos, Direction dir, int size);
 
     void move();
+
+    Crawler(int id, Position pos, Direction dir, int size, BugType bT);
+
     bool isWayBlocked()const;
 
     int getId()const {

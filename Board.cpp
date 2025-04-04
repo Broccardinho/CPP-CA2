@@ -53,15 +53,24 @@ void Board::initializeBoard(const string& filename) {
     updateCellOccupancy();
 }
 
-void Board::displayAllCrawlers() const {
+void Board::displayAllCrawlers()const {
+    cout << "\nAll Bugs: \n";
+    cout << "---------------------------------------------------";
+    cout << "ID\tType\tPosition\tSize\tDirection\tStatus\n";
+    cout << "---------------------------------------------------";
+
     for (const auto& crawler : crawlers_) {
-        cout << crawler->getId() << " "
-             << crawler->typeToString() << " "
-             << "(" << crawler->getPosition().x << "," << crawler->getPosition().y << ") "
-             << crawler->getSize() << " "
-             << crawler->directionToString() << " "
-             << (crawler->isAlive() ? "Alive" : "Dead") << endl;
+        cout << crawler->getId() << "\t"
+        << "Crawler\t"
+        << crawler->getPosition().x << ", " << crawler->getPosition().y << "\t"
+        << crawler->getSize() << "\t"
+        << crawler->directionToString() << "\t"
+        << (crawler->isAlive() ? "Alive" : "Dead") << "\n";
     }
+    cout << "---------------------------------------------------";
+    cout << "Total bugs: " << crawlers_.size() << " ("
+    << getAliveBugCount() << " alive, "
+    << (crawlers_.size() - getAliveBugCount()) << " dead)\n";
 }
 
 Crawler* Board::findBug(int id) const {

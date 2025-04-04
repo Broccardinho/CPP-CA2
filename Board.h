@@ -6,6 +6,7 @@
 #define BOARD_H
 
 // #include "Bug.h"
+#include "Position.h"
 #include "Crawler.h"
 #include <vector>
 #include <map>
