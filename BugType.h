@@ -5,10 +5,11 @@
 #ifndef BUGTYPE_H
 #define BUGTYPE_H
 
-#endif //BUGTYPE_H
+#endif
 
 enum class BugType {
-    CRAWLER
+    CRAWLER,
+    HOPPER
 };
 
 //
