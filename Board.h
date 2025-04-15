@@ -2,17 +2,21 @@
 #define BOARD_H
 
 #include "Bug.h"
-#include "Position.h"
-#include "Crawler.h"
 #include <vector>
 #include <map>
 #include <memory>
 #include <string>
+
+#include "BugType.h"
 using namespace std;
+
 class Board {
 private:
-    vector<Crawler*> bugs;
-    map<Position, vector<Crawler*>> bugsByPosition;
+    vector<Bug*> bugs;
+    map<Position, vector<Bug*>> bugsByPosition;
+
+    void updateBugPositions();
+    void createBug(BugType type, int id, Position pos, Direction dir, int size, int hopLength =0);
 public:
     Board();
     ~Board();
@@ -31,7 +35,6 @@ public:
     private:
     void moveAllLivingBugs();
     void resolveBattles();
-    void updateBugPositions();
 };
 
 #endif // BOARD_H
