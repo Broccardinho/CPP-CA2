@@ -9,6 +9,8 @@
 #include <thread>
 #include <ctime>
 #include <iomanip>
+
+#include "WallHugger.h"
 using namespace std;
 
 
@@ -82,6 +84,10 @@ void Board::initializeBoard(const string &filename) {
             bugs.push_back(new Hopper(id, pos, dir, size, hopLength));
             cout << "Created Hopper: ID=" << id << ", Position=(" << x << "," << y
                     << "), Direction=" << direction << ", Size=" << size << ", HopLength = " << hopLength << endl;
+        } else if (type == 'W') {
+            bugs.push_back(new WallHugger(id, pos, dir, size));
+            cout << "Created WallHugger: ID=" << id << ", Position=(" << x << "," << y
+                    << "), Direction=" << direction << ", Size=" << size << endl;
         } else {
             cerr << "Unknown bug type: " << type << endl;
         }

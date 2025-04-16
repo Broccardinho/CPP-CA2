@@ -9,7 +9,8 @@
 
 enum class BugType {
     CRAWLER,
-    HOPPER
+    HOPPER,
+    WALLHUGGER
 };
 
 //
