@@ -264,8 +264,9 @@ void Board::displayAllCells() const {
             } else {
                 bool first = true;
                 for (const Bug *bug: it->second) {
-                    if (!first) cout << ", ";
-                    cout << bug->getId();
+                    if (!first)
+                        cout << ", ";
+                    cout << bug -> getType() << ", " << bug->getId();
                     first = false;
                 }
             }
