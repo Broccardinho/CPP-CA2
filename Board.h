@@ -31,6 +31,8 @@ public:
     void runSimulation();//Q7
     bool isGameOver() const;//Q7
     void saveLifeHistoryToFile() const;//Q8
+    const vector<Bug*>& getAllBugs() const { return bugs; }
+
 
     private:
     void moveAllLivingBugs();

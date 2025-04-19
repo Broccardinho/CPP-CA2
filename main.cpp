@@ -2,6 +2,8 @@
 #include "Board.h"
 using namespace std;
 #include <iostream>
+#include "SFMLSimulation.h"
+
 
 int main() {
     Board board;
@@ -45,8 +47,8 @@ int main() {
                 board.displayAllCells();
                 break;
             case 7:
-                board.runSimulation();
-                    break;
+                runSFMLSimulation(board);
+                break;
             case 8:
                 board.saveLifeHistoryToFile();
             cout << "Exiting program..." << endl;
