@@ -13,4 +13,15 @@ add_executable(BugBattle main.cpp
         Position.h
         Direction.h
         BugType.h
+        Hopper.cpp
+        WallHugger.cpp
+        SFMLSimulation.cpp
+        SFMLSimulation.h
 )
+
+set(SFML_STATIC_LIBRARIES TRUE)
+set(SFML_DIR C:/SFML-2.6.2/lib/cmake/SFML)
+find_package(SFML COMPONENTS system window graphics network REQUIRED)
+
+include_directories(C:/SFML-2.6.2/include)
+target_link_libraries(BugBattle sfml-system sfml-window sfml-graphics)
