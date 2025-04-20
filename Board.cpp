@@ -26,12 +26,14 @@ Board::~Board() {
 }
 
 void Board::clearBugs() {
-    //ensures that each time this is ran, the bugs are reset
     for (Bug *bug: bugs) {
         delete bug;
     }
     bugs.clear();
+
+    superBug = nullptr; // the superbug must be reset aswell
 }
+
 
 
 void Board::initializeBoard(const string &filename) {
