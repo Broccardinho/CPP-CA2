@@ -8,18 +8,25 @@
 #include <string>
 
 #include "BugType.h"
+#include "SuperBug.h"
 using namespace std;
 
 class Board {
 private:
     vector<Bug*> bugs;
     map<Position, vector<Bug*>> bugsByPosition;
+    SuperBug* superBug = nullptr;
 
     void updateBugPositions();
     void createBug(BugType type, int id, Position pos, Direction dir, int size, int hopLength =0);
+
 public:
+    void addSuperBug();
+    SuperBug* getSuperBug() const { return superBug; }
+
     Board();
     ~Board();
+
 
     void clearBugs();
      void initializeBoard(const string& filename);//Q1

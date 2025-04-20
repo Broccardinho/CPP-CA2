@@ -47,8 +47,9 @@ int main() {
                 board.displayAllCells();
                 break;
             case 7:
-                runSFMLSimulation(board);
-                break;
+            board.addSuperBug();
+            runSFMLSimulation(board);
+            break;
             case 8:
                 board.saveLifeHistoryToFile();
             cout << "Exiting program..." << endl;

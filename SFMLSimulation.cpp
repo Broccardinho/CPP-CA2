@@ -45,6 +45,12 @@ void runSFMLSimulation(Board& board)
 
         board.tapBoard();
 
+        if (event.type == sf::Event::KeyPressed) {
+            if (board.getSuperBug()) {
+                board.getSuperBug()->handleInput(event.key.code);
+            }
+        }
+
         // Bug stufff
         bugShapes.clear();
         bugTexts.clear();
@@ -60,9 +66,13 @@ void runSFMLSimulation(Board& board)
                 bugShape.setFillColor(Color::Blue);
             } else if (type == "WallHugger") {
                 bugShape.setFillColor(Color::Yellow);
-            } else {
+            } else if (type == "SuperBug") {
+                bugShape.setFillColor(sf::Color::Magenta);
+            }
+            else {
                 bugShape.setFillColor(Color::White);
             }
+
 
             Position pos = bug->getPosition();
             bugShape.setPosition(pos.x * cellSize + 10, pos.y * cellSize + 10);
@@ -89,7 +99,7 @@ void runSFMLSimulation(Board& board)
             window.draw(bug);
         }
 
-        // Draw bug IDs
+        // Draw da text
         for (Text &text : bugTexts) {
             window.draw(text);
         }

@@ -17,6 +17,8 @@ add_executable(BugBattle main.cpp
         WallHugger.cpp
         SFMLSimulation.cpp
         SFMLSimulation.h
+        SuperBug.cpp
+        SuperBug.h
 )
 
 set(SFML_STATIC_LIBRARIES TRUE)

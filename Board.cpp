@@ -9,9 +9,11 @@
 #include <thread>
 #include <ctime>
 #include <iomanip>
+#include "SuperBug.h"
 
 #include "WallHugger.h"
 using namespace std;
+
 
 
 Board::Board() {
@@ -354,4 +356,12 @@ void Board::saveLifeHistoryToFile() const {
 
     outFile.close();
     cout << "Bug life history automatically saved to " << filename << endl;
+}
+
+void Board::addSuperBug() {
+    if (!superBug) {
+        Position startPos = {0, 0};
+        superBug = new SuperBug(999, startPos, Direction::EAST, 99);
+        bugs.push_back(superBug); // So it participates in battles and gets drawn
+    }
 }
