@@ -6,6 +6,15 @@ using namespace std;
 
 void runSFMLSimulation(Board& board)
 {
+    sf::Texture crawlerTexture, hopperTexture, wallHuggerTexture, superBugTexture;
+
+    if (!crawlerTexture.loadFromFile("Crawler.png") ||
+        !hopperTexture.loadFromFile("Hopper.png") ||
+        !wallHuggerTexture.loadFromFile("WallHugger.png") ||
+        !superBugTexture.loadFromFile("SuperBug.png")) {
+        throw std::runtime_error("Failed to load one or more bug textures.");
+        }
+
     const int cellSize = 60;
     const int gridSize = 10;
 
@@ -54,40 +63,47 @@ void runSFMLSimulation(Board& board)
         // Bug stufff
         bugShapes.clear();
         bugTexts.clear();
+        window.clear();
+
+        // Draw grid
+        for (RectangleShape &rect : rectangles) {
+            window.draw(rect);
+        }
+
+        // Draw bugs
         for (const Bug* bug : board.getAllBugs()) {
             if (!bug->isAlive()) continue;
 
-            CircleShape bugShape(20);
-            string type = bug->getType();
-
-            if (type == "Crawler") {
-                bugShape.setFillColor(Color::Red);
-            } else if (type == "Hopper") {
-                bugShape.setFillColor(Color::Blue);
-            } else if (type == "WallHugger") {
-                bugShape.setFillColor(Color::Yellow);
-            } else if (type == "SuperBug") {
-                bugShape.setFillColor(sf::Color::Magenta);
-            }
-            else {
-                bugShape.setFillColor(Color::White);
-            }
-
-
+            sf::Sprite sprite;
             Position pos = bug->getPosition();
-            bugShape.setPosition(pos.x * cellSize + 10, pos.y * cellSize + 10);
-            bugShapes.push_back(bugShape);
 
-            Text bugIdText;
-            bugIdText.setFont(font);
-            bugIdText.setCharacterSize(16);
-            bugIdText.setFillColor(Color::Black);
-            bugIdText.setString(to_string(bug->getId()));
-            bugIdText.setPosition(pos.x * cellSize + 15, pos.y * cellSize + 15);
-            bugTexts.push_back(bugIdText);
+            std::string type = bug->getType();
+            if (type == "Crawler") {
+                sprite.setTexture(crawlerTexture);
+            } else if (type == "Hopper") {
+                sprite.setTexture(hopperTexture);
+            } else if (type == "WallHugger") {
+                sprite.setTexture(wallHuggerTexture);
+            } else if (type == "SuperBug") {
+                sprite.setTexture(superBugTexture);
+            }
+
+            sprite.setScale(1.f, 1.f);  // Doesn't scale because I made the sprites 60x60
+            sprite.setPosition(pos.x * cellSize, pos.y * cellSize);  // Align top-left of sprite with top-left of cell
+
+            window.draw(sprite);
+
+            // sf::Text bugIdText;
+            // bugIdText.setFont(font);
+            // bugIdText.setCharacterSize(14);
+            // bugIdText.setFillColor(sf::Color::White);
+            // bugIdText.setString(std::to_string(bug->getId()));
+            // bugIdText.setPosition(pos.x * cellSize + 20, pos.y * cellSize + 10);
+            // window.draw(bugIdText);
         }
 
-        window.clear();
+        window.display();
+
 
         // Draw grid
         for (RectangleShape &rect : rectangles) {
@@ -104,7 +120,6 @@ void runSFMLSimulation(Board& board)
             window.draw(text);
         }
 
-        window.display();
 
         if (board.isGameOver()) {
             sleep(seconds(2));

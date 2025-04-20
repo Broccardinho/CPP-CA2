@@ -362,8 +362,8 @@ void Board::saveLifeHistoryToFile() const {
 
 void Board::addSuperBug() {
     if (!superBug) {
-        Position startPos = {0, 0};
+        Position startPos = {5, 5};
         superBug = new SuperBug(999, startPos, Direction::EAST, 99);
-        bugs.push_back(superBug); // So it participates in battles and gets drawn
+        bugs.push_back(superBug); // So it gets drawn
     }
 }
