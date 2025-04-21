@@ -6,6 +6,7 @@
 #define HOPPER_H
 
 #include "Bug.h"
+#include <string>
 
 class Hopper : public Bug {
 private:
@@ -13,8 +14,8 @@ private:
 public:
     Hopper(int id, Position pos, Direction dir, int size, int hopLength);
     void move() override;
-    string getType() const override;
-    int getHopLength() const {return hopLength;}
+    std::string getType() const override;
+    int getHopLength() const { return hopLength; }
 };
 
 #endif
