@@ -363,7 +363,7 @@ void Board::saveLifeHistoryToFile() const {
 void Board::addSuperBug() {
     if (!superBug) {
         Position startPos = {5, 5};
-        superBug = new SuperBug(999, startPos, Direction::EAST, 99);
+        superBug = new SuperBug(999, startPos, Direction::EAST, 5);
         bugs.push_back(superBug); // So it gets drawn
     }
 }
