@@ -13,4 +13,10 @@ add_executable(BugBattle main.cpp
         Position.h
         Direction.h
         BugType.h
+        Hopper.cpp
+        Hopper.h
+        wallHugger.cpp
+        wallHugger.h
+        SuperBug.cpp
+        SuperBug.h
 )
