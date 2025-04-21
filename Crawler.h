@@ -2,6 +2,7 @@
 #define CRAWLER_H
 
 #include "Bug.h"
+#include <string>
 
 class Crawler : public Bug {
 public:
