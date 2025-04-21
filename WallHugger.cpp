@@ -14,57 +14,43 @@ WallHugger::WallHugger(int id, Position pos, Direction dir, int size)
 void WallHugger::move() {
     if (!alive) return;
 
-    if (position.y == 0 && direction != Direction::EAST) {
-        direction = Direction::EAST;
-    } else if (position.y == 9 && direction != Direction::SOUTH) {
-        direction = Direction::SOUTH;
-    } else if (position.y == 9 && direction != Direction::WEST) {
-        direction = Direction::WEST;
-    } else if (position.y == 0 && direction != Direction::NORTH) {
-        direction = Direction::NORTH;
-    }
     Position newPos = position;
 
     switch (direction) {
-        case Direction::EAST:
-            newPos.x++;
-            if (newPos.x > 9) {
-                newPos.x = 9;
-                direction = Direction::SOUTH;
-                newPos.y++;
-            }
-            break;
-
-        case Direction::SOUTH:
-            newPos.y++;
-            if (newPos.y > 9) {
-                newPos.y = 9;
-                direction = Direction::WEST;
-                newPos.x--;
-            }
-            break;
-
-        case Direction::WEST:
-            newPos.x--;
-            if (newPos.x < 0) {
-                newPos.x = 0;
-                direction = Direction::NORTH;
-                newPos.y--;
-            }
-            break;
-
-        case Direction::NORTH:
-            newPos.y--;
-            if (newPos.y < 0) {
-                newPos.y = 0;
-                direction = Direction::EAST;
-                newPos.x++;
-            }
-            break;
+        case Direction::NORTH: newPos.y--; break;
+        case Direction::EAST:  newPos.x++; break;
+        case Direction::SOUTH: newPos.y++; break;
+        case Direction::WEST:  newPos.x--; break;
     }
 
-    newPos.x = clamp(newPos.x, 0, 9);
-    newPos.y = clamp(newPos.y, 0, 9);
+    if (newPos.x < 0 || newPos.x > 9 || newPos.y < 0 || newPos.y > 9) {
+        if (rand() % 5 == 0) {
+            switch (direction) {
+                case Direction::NORTH: direction = Direction::SOUTH; break;
+                case Direction::EAST:  direction = Direction::WEST;  break;
+                case Direction::SOUTH: direction = Direction::NORTH; break;
+                case Direction::WEST:  direction = Direction::EAST;  break;
+            }
+        } else {
+            switch (direction) {
+                case Direction::NORTH: direction = Direction::EAST;  break;
+                case Direction::EAST:  direction = Direction::SOUTH; break;
+                case Direction::SOUTH: direction = Direction::WEST;  break;
+                case Direction::WEST:  direction = Direction::NORTH; break;
+            }
+        }
+
+        newPos = position;
+        switch (direction) {
+            case Direction::NORTH: newPos.y--; break;
+            case Direction::EAST:  newPos.x++; break;
+            case Direction::SOUTH: newPos.y++; break;
+            case Direction::WEST:  newPos.x--; break;
+        }
+    }
+
+    newPos.x = max(0, min(9, newPos.x));
+    newPos.y = max(0, min(9, newPos.y));
 
     position = newPos;
     addToPath(position);
